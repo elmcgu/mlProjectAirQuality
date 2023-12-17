@@ -1,0 +1,139 @@
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error
+import matplotlib.pyplot as plt
+import seaborn as sns
+# Load the dataset
+df = pd.read_csv('weatherPm2Dataset.csv')
+
+# Explore the data
+print(df.head())
+print(df.info())
+
+# Check the data types of columns in the DataFrame
+print(df.dtypes)
+
+
+
+# Convert the 'column_name' from object to float
+df['maxTemp'] = df['maxTemp'].astype(float)
+
+# Check the data types again to verify the conversion
+print(df.dtypes)
+# Identify rows with non-numeric values in 'maxTemp'
+non_numeric_rows = df[df['maxTemp'].str.strip() == ' ']
+
+# Display rows with non-numeric values
+print(non_numeric_rows)
+
+df['maxTemp'] = pd.to_numeric(df['maxTemp'], errors='coerce')
+df['maxTemp'].fillna(df['maxTemp'].mean(), inplace=True)
+
+# Convert the 'column_name' from object to float
+df['maxTemp'] = df['maxTemp'].astype(float)
+
+# Check the data types again to verify the conversion
+print(df.dtypes)
+
+df['rainfall'].fillna(df['rainfall'].mean(), inplace=True)
+
+
+# Convert the 'column_name' from object to float
+df['maxTemp'] = df['maxTemp'].astype(float)
+
+# Check the data types again to verify the conversion
+print(df.dtypes)
+
+
+# Verify that missing values are removed
+print(df.isnull().sum())
+
+#Handle missing values
+df = df.dropna()
+
+#Convert date/time columns
+df['date'] = pd.to_datetime(df['date'])
+
+plt.figure(figsize=(12, 6))
+sns.scatterplot(x='date', y='pm2.5', data=df)
+plt.show()
+#Features
+X = df[['rainfall', 'maxTemp', 'pressure', 'windSpeed']]
+
+# Target variable
+y = df['pm2.5']
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=50)
+
+model = LinearRegression()
+model.fit(X_train, y_train)
+predictions = model.predict(X_test)
+
+#Evaluate using Mean Squared Error
+mse = mean_squared_error(y_test, predictions)
+print(f'Mean Squared Error: {mse}')
+#Features
+X = df[['rainfall']]
+
+# Target variable
+y = df['pm2.5']
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=50)
+
+model = LinearRegression()
+model.fit(X_train, y_train)
+
+predictions = model.predict(X_test)
+
+#Evaluate using Mean Squared Error
+mse = mean_squared_error(y_test, predictions)
+print(f'Mean Squared Error: {mse}')
+
+#Features
+X = df[['maxTemp']]
+
+# Target variable
+y = df['pm2.5']
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=50)
+
+model = LinearRegression()
+model.fit(X_train, y_train)
+
+predictions = model.predict(X_test)
+
+#Evaluate using Mean Squared Error
+mse = mean_squared_error(y_test, predictions)
+print(f'Mean Squared Error: {mse}')
+#Features
+X = df[['pressure']]
+
+# Target variable
+y = df['pm2.5']
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=50)
+
+model = LinearRegression()
+model.fit(X_train, y_train)
+
+predictions = model.predict(X_test)
+
+#Evaluate using Mean Squared Error
+mse = mean_squared_error(y_test, predictions)
+print(f'Mean Squared Error: {mse}')
+#Features
+X = df[['windSpeed']]
+
+# Target variable
+y = df['pm2.5']
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=50)
+
+model = LinearRegression()
+model.fit(X_train, y_train)
+
+predictions = model.predict(X_test)
+
+#Evaluate using Mean Squared Error
+mse = mean_squared_error(y_test, predictions)
+print(f'Mean Squared Error: {mse}')
